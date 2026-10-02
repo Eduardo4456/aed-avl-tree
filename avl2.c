@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+<<<<<<< HEAD
 #include <assert.h>
+=======
+>>>>>>> 0bedc7be508e06fb8981682ca228c9db49bfd31f
 
 //estrutura de um nó da árvore
 typedef struct node {
@@ -255,12 +258,104 @@ void printTree(Node *root, int level) {
     printTree(root->left, level + 1);
 }
 
+<<<<<<< HEAD
 // Função de comparação
 int int_comp(const void *a, const void *b)
 {   
     //converte os ponteiros para inteiros e retorna a diferença entre eles
     return (*(int *)a - *(int *)b);
 }
+=======
+/*------------------------------------------------------------------------------
+ * Permutação de um Arranjo
+ *
+ * Implementan o algoritmo iterativo de Narayana Pandita para a permutação de
+ * um arranjo em ordem lexicográfica.
+ */
+
+ //Função auxiliar para trocar dois elementos de um arranjo
+void swap(int *a, int *b)
+{
+    const int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+//Função auxiliar para inverter um arranjo entre os índices inicio e fim
+void perm_invert(int *arr, int inicio, int fim)
+{
+    while (inicio < fim) {
+        swap(&arr[inicio], &arr[fim]);
+        inicio++;
+        fim--;
+    }
+}
+
+//Função que gera a próxima permutação lexicográfica de um arranjo
+bool perm_next(int *arr, int tamanho)
+{
+    int i = tamanho - 2;
+
+    while (i >= 0 && arr[i] >= arr[i + 1]) {
+        i--;
+    }
+
+    if (i < 0) {
+        return false;
+    }
+
+    int j = tamanho - 1;
+    while (arr[j] <= arr[i]) {
+        j--;
+    }
+
+    swap(&arr[i], &arr[j]);
+
+    perm_invert(arr, i + 1, tamanho - 1);
+
+    return true;
+}
+
+/*------------------------------------------------------------------------------
+ * Funções Auxiliares
+ */
+
+ //Função que imprime os elementos de um arranjo
+void data_print(const int * const data, const int N)
+{
+    printf("data: [ ");
+    for (int i = 0; i < N; i++) {
+        printf("%02d ", data[i]);
+    }
+    printf("]\n");
+}
+
+//Função que remove todas as ocorrências de um valor em um arranjo e retorna o novo tamanho do arranjo
+int arr_remove(int *arr, int N, int value)
+{
+    for (int i = 0; i < N; i++) {
+        if (arr[i] == value) {
+            for (int j = i; j < N - 1; j++) {
+                arr[j] = arr[j + 1];
+            }
+            N--;
+            i--;
+        }
+    }
+
+    return N;
+}
+
+int main() {
+    Node *root = NULL;
+    root = insert(root, 2);
+    root = insert(root, 10);
+    root = insert(root, 1);
+    root = insert(root, 3);
+    root = insert(root, 4);
+    root = insert(root, 5);
+    printTree(root, 0);
+>>>>>>> 0bedc7be508e06fb8981682ca228c9db49bfd31f
 
 //função que calcula o tamanho da árvore
 int avl_size(Node *x)
