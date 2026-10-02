@@ -2,7 +2,7 @@
 
 Implementação de uma **árvore AVL** (árvore binária de busca auto-balanceada) em C, com inserção, remoção, rotações e impressão da árvore.
 
-O foco deste README é a **remoção de um nó** (`removeNode`) e o papel da **recursividade** nela: é a função mais interessante do código, porque combina a remoção clássica de uma BST com o rebalanceamento dos ancestrais, e os dois acontecem graças à recursão.
+Esse código foi implementado e estudado para apresentação da **Avaliação I** da matéria **AED II** do curso Ciência da Computação, focado na função de remoção de um nó.
 
 ## Sumário
 
@@ -28,26 +28,6 @@ gcc avl2.c -o avl
 ./avl
 ```
 
-O `main` insere os valores `2, 10, 1, 3, 4, 5`, imprime a árvore, remove o `2` e imprime de novo. Saída esperada:
-
-```
-    10
-        5
-4
-        3
-    2
-        1
-elemento trocado: 2 !
-elemento folha removido: 2 !
-    10
-        5
-4
-        3
-    1
-```
-
-`printTree` imprime a árvore **deitada** (girada 90°): o lado direito aparece em cima, a raiz fica no recuo zero e cada nível avança 4 espaços.
-
 ## O que é uma AVL
 
 Uma AVL é uma árvore binária de busca que mantém, em **todos** os nós, a diferença de altura entre as subárvores esquerda e direita em no máximo 1. Isso garante altura `O(log n)` e, portanto, busca, inserção e remoção em `O(log n)`, mesmo para entradas em ordem crescente (que degeneram uma BST comum em uma lista).
@@ -70,7 +50,7 @@ typedef struct node {
 
 | Função | O que faz |
 |---|---|
-| `newNode` | aloca um nó folha (altura 0) |
+| `newNode` | aloca um nó |
 | `bigger` | maior de dois `short` |
 | `heigNode` | altura de um nó (`-1` se for `NULL`) |
 | `balancingFactor` | calcula `fb` de um nó |
@@ -79,7 +59,6 @@ typedef struct node {
 | `balance` | decide qual rotação aplicar, se alguma |
 | `insert` | insere recursivamente e rebalanceia na volta |
 | `removeNode` | **remove recursivamente e rebalanceia na volta** |
-| `printTree` | imprime a árvore deitada |
 
 ### Como `balance` escolhe a rotação
 
@@ -149,7 +128,7 @@ flowchart TD
 | **Recursivo** | nó não é a chave | desce para esquerda ou direita |
 | **Recursivo** | nó é a chave e tem 2 filhos | troca com o antecessor e chama `removeNode` na esquerda |
 
-A recursão sempre termina porque cada chamada recebe uma subárvore **estritamente menor** (um dos filhos), até cair em um caso-base.
+**A recursão sempre termina porque cada chamada recebe uma subárvore **estritamente menor** (um dos filhos), até cair em um caso-base.**
 
 ### Ida e volta da recursão
 
@@ -198,8 +177,11 @@ Libera o nó e devolve `NULL`. O pai, que fez `root->left = removeNode(...)`, pa
 
 ```c
 Node *aux;
-if(root->left != NULL) aux = root->left;
-else                   aux = root->right;
+if(root->left != NULL){
+    aux = root->left;
+} else{
+    aux = root->right;
+}                   
 free(root);
 printf("elemento com 1 filho removido: %d !\n", key);
 return aux;
@@ -349,7 +331,6 @@ Variação em que o `=` importa: em `10(5, 15(12, 20))`, remover o 5 deixa `fb(1
 | Inserção | `O(log n)` (no máximo 1 rotação) |
 | Remoção | `O(log n)` (até `O(log n)` rotações) |
 | Rotação, `heigNode`, `balancingFactor` | `O(1)` |
-| `printTree` | `O(n)` |
 
 Na remoção com dois filhos há, no máximo, duas descidas (até o nó e depois até o antecessor), o que continua sendo `O(log n)`. A profundidade da recursão também é `O(log n)`, já que a altura da AVL é logarítmica.
 
